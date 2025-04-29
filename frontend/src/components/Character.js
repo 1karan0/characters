@@ -54,13 +54,13 @@ const Character = () => {
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center mb-20 overflow-hidden">
             <img
-              src={`http://localhost:3000/uploads/${character.image}`}
+              src={`https://characters-backend-3twu.onrender.com/uploads/${character.image}`}
               alt={character.name}
               className="w-16  rounded-full bg-gradient-to-r from-sky-300 to-[#642fa6]  border-2 "
             />
           </div>
           <img
-            src={`http://localhost:3000/uploads/${character.image}`}
+            src={`https://characters-backend-3twu.onrender.com/uploads/${character.image}`}
             alt={character.name}
             className="h-[60vh] object-contain mb-8"
           />

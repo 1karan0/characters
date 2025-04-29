@@ -85,7 +85,7 @@ const Home = () => {
               }`}
             >
               <img
-                src={`http://localhost:3000/uploads/${character.image}`}
+                src={`https://characters-backend-3twu.onrender.com/uploads/${character.image}`}
                 alt={character.name}
                 className="w-16 h-16 xsm:w-8 xsm:h-8 sm:w-12 sm:h-12 object-cover bg-gradient-to-r from-sky-300 to-[#642fa6]"
               />
@@ -116,7 +116,7 @@ const Home = () => {
                 </p>
               </div>
               <img
-                src={`http://localhost:3000/uploads/${selectedCharacter.image}`}
+                src={`https://characters-backend-3twu.onrender.com/uploads/${selectedCharacter.image}`}
                 alt={selectedCharacter.name}
                 className="h-[64vh] w-[30vw] xsm:w-full sm:w-[60%] object-contain"
               />
