@@ -56,7 +56,7 @@ const Character = () => {
             <img
               src={`https://characters-backend-3twu.onrender.com/uploads/${character.image}`}
               alt={character.name}
-              className="w-16  rounded-full bg-gradient-to-r from-sky-300 to-[#642fa6]  border-2 "
+              className="w-16 h-16 object-cover  rounded-full bg-gradient-to-r from-sky-300 to-[#642fa6]  border-2 "
             />
           </div>
           <img
