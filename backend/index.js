@@ -39,3 +39,7 @@ app.use('/api/v1', character);
 app.listen(PORT, () => {
     console.log(`App is running at ${PORT}`);
 })
+
+app.get ('/',(req,res)=>{
+  res.send("orr bahi kaisa ha ")
+})
