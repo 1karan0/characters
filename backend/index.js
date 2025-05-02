@@ -1,31 +1,41 @@
+//app create
 const express = require("express");
-const dbconnect = require("./config/database");
-dbconnect(); // Connect to the database
-const charRoutes = require("./routes/Routes");
-const cors = require("cors");
 const app = express();
-const path = require("path");
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+const cors = require("cors");
 app.use(
   cors({
     origin: "*",
   })
 );
 
-app.use("/api/v1", charRoutes);
-// Set up the server to listen on a specified port
-PORT = process.env.PORT || 4000;
+//PORt find krna h 
 require("dotenv").config();
+const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON requests
+//middleware add krne h 
 app.use(express.json());
+const fileupload = require("express-fileupload");
+app.use(fileupload({
+  useTempFiles: true,
+  tempFileDir: '/tmp/',
+}));
 
-// starts the server and listens for incoming requests
+//db se connect krnah 
+const dbconnect = require("./config/database");
+dbconnect();
+
+//cloud se connect krna h 
+// const cloudinary = require("./config/cloudinary");
+// cloudinary.cloudinaryConnect();
+const cloudinary = require('./config/cloudinary')
+cloudinary.cloudinaryconnect()
+
+//api route mount krna h 
+const character = require("./routes/Routes");
+
+app.use('/api/v1', character);
+
+//activate server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+    console.log(`App is running at ${PORT}`);
+})

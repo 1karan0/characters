@@ -76,17 +76,17 @@ const Home = () => {
         <div className="flex flex-col xsm:flex-row sm:flex-row md:flex-row md:justify-center sm:justify-center xsm:justify-center items-center gap-6 mb-8">
           {characters.map((character) => (
             <button
-              key={character._id}
+              key={character?._id}
               onClick={() => setSelectedCharacter(character)}
               className={`rounded-full overflow-hidden border-2 ${
-                selectedCharacter?._id === character._id
+                selectedCharacter?._id === character?._id
                   ? "border-orange-400"
                   : "border-gray-700"
               }`}
             >
               <img
-                src={`https://characters-backend-3twu.onrender.com/uploads/${character.image}`}
-                alt={character.name}
+                src={`${character?.image}`}
+                alt={character?.name}
                 className="w-16 h-16 xsm:w-8 xsm:h-8 sm:w-12 sm:h-12 object-cover bg-gradient-to-r from-sky-300 to-[#642fa6]"
               />
             </button>
@@ -116,8 +116,8 @@ const Home = () => {
                 </p>
               </div>
               <img
-                src={`https://characters-backend-3twu.onrender.com/uploads/${selectedCharacter.image}`}
-                alt={selectedCharacter.name}
+                src={`${selectedCharacter?.image}`}
+                alt={selectedCharacter?.name}
                 className="h-[64vh] w-[30vw] xsm:w-full sm:w-[60%] object-contain"
               />
             </div>
@@ -125,7 +125,7 @@ const Home = () => {
         )}
       </div>
       <button
-        onClick={() => navigate(`/character/${selectedCharacter._id}`)}
+        onClick={() => navigate(`/character/${selectedCharacter?._id}`)}
         className="px-6 py-2 border xsm:text-xs xsm:px-3 xsm:py-1 border-white rounded-md hover:bg-white hover:text-black transition"
       >
         READ MORE

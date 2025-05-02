@@ -28,11 +28,18 @@ exports.getCharById = async (req, res) => {
   try {
     const { id } = req.params;
     const character = await Character.findById(id);
+    if(!character){
+      res.status(201).json({
+        success: false,
+        message: "No character found with this id",
+      })
+    }
     res.status(200).json({
       success: true,
       message: "character fetched successfully",
       data: character,
     });
+    
   } catch (err) {
     return res.status(500).json({
       success: false,

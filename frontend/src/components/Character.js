@@ -13,7 +13,7 @@ const Character = () => {
     try {
       const response = await fetch(`${BASE_URL}/characters/${id}`);
       const data = await response.json();
-      setCharacter(data.data);
+      setCharacter(data?.data);
     } catch (err) {
       console.error("Error fetching character:", err);
     }
@@ -46,7 +46,7 @@ const Character = () => {
               WebkitTextFillColor: "transparent",
             }}
           >
-            {character.univers} Characters
+            {character?.univers} Characters
           </h1>
         </div>
       </div>
@@ -54,14 +54,14 @@ const Character = () => {
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center mb-20 overflow-hidden">
             <img
-              src={`https://characters-backend-3twu.onrender.com/uploads/${character.image}`}
-              alt={character.name}
+              src={`${character?.image}`}
+              alt={character?.name}
               className="w-16 h-16 object-cover  rounded-full bg-gradient-to-r from-sky-300 to-[#642fa6]  border-2 "
             />
           </div>
           <img
-            src={`https://characters-backend-3twu.onrender.com/uploads/${character.image}`}
-            alt={character.name}
+            src={`${character?.image}`}
+            alt={character?.name}
             className="h-[60vh] object-contain mb-8"
           />
           <h2
@@ -73,19 +73,19 @@ const Character = () => {
               WebkitTextFillColor: "transparent",
             }}
           >
-            {character.name}
+            {character?.name}
           </h2>
           <h3 className="text-orange-300 uppercase text-lg mb-4">
-            {character.title}
+            {character?.title}
           </h3>
           <p className="text-gray-300 mb-12 max-w-2xl text-xl ">
-            {character.shortdescription}
+            {character?.shortdescription}
           </p>
 
           <div
             className="max-w-4xl text-xl text-gray-400 leading-relaxed space-y-8 text-justify"
           >
-            {character.fulldescription}
+            {character?.fulldescription}
           </div>
         </div>
       </div>
