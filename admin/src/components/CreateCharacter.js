@@ -189,19 +189,14 @@ const CreateCharacter = () => {
           {/* Universe Select */}
           <div className="flex items-center gap-3 bg-gray-800 p-3 rounded">
             <FaGlobe />
-            <select
-              name="univers"
-              value={character?.univers}
-              onChange={handleChange}
-              required
-              className="w-full p-3 text-white bg-gray-800 cursor-pointer outline-none"
-            >
-              <option value="" disabled>
-                Choose Universe
-              </option>
-              <option value="ramayan">Ramayan</option>
-              <option value="mahabharat">Mahabharat</option>
-            </select>
+            <input type="text"
+            name="univers"
+            value={character.univers}
+            onChange={handleChange}
+            placeholder="enter univers"
+            required
+             className="w-full p-3 rounded bg-gray-800 text-white outline-none"
+            />
           </div>
 
           {/* File Upload */}

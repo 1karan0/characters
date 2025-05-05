@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import { AuthContext } from './components/AuthContext';
 import UpdateCharacter from "./components/UpdateCharacter";
+import CharacterById from "./components/CharacterById";
 
 
 const App = () => {
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="Allcharacters" element={<AllCharacters />} />
             <Route path="Createcharacter" element={<CreateCharacter />} />
             <Route path="updateCharacter/:id" element={<UpdateCharacter/>}/>
+            <Route path="character/:id" element={<CharacterById/>}/>
             {/* Optional: fallback redirect */}
             <Route path="*" element={<Navigate to="/Dashboard" />} />
           </Route>

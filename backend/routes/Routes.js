@@ -14,7 +14,7 @@ const { UpdateCharacter } = require("../controllers/UpdateCharacter");
 
 router.post("/createchar",auth, createCharacter);
 router.get("/characters/:id", getCharById);
-router.get("/characters/univres/:univers", getAllCharacters);
+router.get("/characters", getAllCharacters);
 router.delete("/characters/:id", deleteCharacter);
 router.post('/signup',signUp);
 router.post('/login',login);

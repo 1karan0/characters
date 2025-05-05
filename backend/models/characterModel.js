@@ -22,7 +22,6 @@ const characterSchema = new mongoose.Schema({
   },
   univers: {
     type: String,
-    enum: ["ramayan", "mahabharat"],
     required: true,
   },
 

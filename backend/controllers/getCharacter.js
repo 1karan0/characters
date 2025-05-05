@@ -2,8 +2,8 @@ const Character = require("../models/characterModel");
 
 exports.getAllCharacters = async (req, res) => {
   try {
-    const { univers } = req.params;
-    const characters = await Character.find({ univers });
+    // const { univers } = req.params;
+    const characters = await Character.find();
     if(!characters || characters.length === 0){
       return res.status(404).json({
         success: false,

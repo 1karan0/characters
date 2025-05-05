@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaUsers, FaPlus, FaGlobe, FaChartBar } from "react-icons/fa";
+import { FaUsers, FaPlus, FaGlobe } from "react-icons/fa";
 import axios from "axios";
 
 const Dashboard = () => {
-  const [selectedTab, setSelectedTab] = useState("ramayan");
-  const [loading, setLoading] = useState(true);
+  const [allCharacters, setAllCharacters] = useState([]);
   const [characters, setCharacters] = useState([]);
+  const [universes, setUniverses] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("");
+  const [loading, setLoading] = useState(true);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const fetchCharacters = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `${BASE_URL}/characters/univres/${selectedTab}`
-      );
-      setCharacters(response?.data?.data || []);
+      const response = await axios.get(`${BASE_URL}/characters`);
+      const allChars = response?.data?.data || [];
+
+      setAllCharacters(allChars);
+
+      const uniqueUniverses = [...new Set(allChars.map((char) => char.univers))];
+      setUniverses(uniqueUniverses);
+
+      if (!selectedTab && uniqueUniverses.length > 0) {
+        setSelectedTab(uniqueUniverses[0]);
+      }
     } catch (err) {
       console.error("Error fetching characters:", err);
     } finally {
@@ -25,15 +34,22 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchCharacters();
-  }, [selectedTab]);
+  }, []);
+
+  useEffect(() => {
+    if (selectedTab) {
+      const filtered = allCharacters.filter((char) => char.univers === selectedTab);
+      setCharacters(filtered);
+    }
+  }, [selectedTab, allCharacters]);
 
   return (
-    <div className="min-h-screen p-6 text-white  ">
+    <div className="min-h-screen p-6 text-white">
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
       {/* Tabs */}
-      <div className="flex gap-4 mb-6">
-        {["ramayan", "mahabharat"].map((universe) => (
+      <div className="flex gap-4 mb-6 flex-wrap">
+        {universes.map((universe) => (
           <button
             key={universe}
             className={`px-4 py-2 rounded-lg transition ${
@@ -62,11 +78,9 @@ const Dashboard = () => {
           <FaGlobe className="text-3xl text-green-400" />
           <div>
             <p className="text-lg font-semibold">Universes</p>
-            <p className="text-2xl">2</p>
+            <p className="text-2xl">{universes.length}</p>
           </div>
         </div>
-
-        
       </div>
 
       {/* Create Button */}
