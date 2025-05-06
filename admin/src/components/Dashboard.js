@@ -9,7 +9,9 @@ const Dashboard = () => {
   const [universes, setUniverses] = useState([]);
   const [selectedTab, setSelectedTab] = useState("");
   const [loading, setLoading] = useState(true);
+  const [uni, setUni] = useState([]);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
+  
 
   const fetchCharacters = async () => {
     setLoading(true);
@@ -21,7 +23,7 @@ const Dashboard = () => {
 
       // Extract unique universe names (strings)
       const uniqueUniverses = [
-        ...new Set(allChars.map((char) => char.univers?.univers))
+        ...new Set(allChars.map((char) => char.univers?.univers)),
       ].filter(Boolean); // remove undefined/null if any
 
       setUniverses(uniqueUniverses);
@@ -35,9 +37,18 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+  const fetchUnivers = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/getunivers`);
+      setUni(res?.data?.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     fetchCharacters();
+    fetchUnivers();
   }, []);
 
   useEffect(() => {
@@ -72,21 +83,21 @@ const Dashboard = () => {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-gray-800 p-5 rounded-xl shadow-md flex items-center space-x-4">
+        <Link to="/Allcharacters" className="bg-gray-800 p-5 rounded-xl shadow-md flex items-center space-x-4">
           <FaUsers className="text-3xl text-blue-400" />
           <div>
             <p className="text-lg font-semibold">Characters ({selectedTab})</p>
             <p className="text-2xl">{characters.length}</p>
           </div>
-        </div>
+        </Link>
 
-        <div className="bg-gray-800 p-5 rounded-xl shadow-md flex items-center space-x-4">
+        <Link to="/createunivers" className="bg-gray-800 p-5 rounded-xl shadow-md flex items-center space-x-4">
           <FaGlobe className="text-3xl text-green-400" />
           <div>
             <p className="text-lg font-semibold">Universes</p>
-            <p className="text-2xl">{universes.length}</p>
+            <p className="text-2xl">{uni.length}</p>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Create Button */}
