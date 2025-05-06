@@ -19,7 +19,11 @@ const Dashboard = () => {
 
       setAllCharacters(allChars);
 
-      const uniqueUniverses = [...new Set(allChars.map((char) => char.univers))];
+      // Extract unique universe names (strings)
+      const uniqueUniverses = [
+        ...new Set(allChars.map((char) => char.univers?.univers))
+      ].filter(Boolean); // remove undefined/null if any
+
       setUniverses(uniqueUniverses);
 
       if (!selectedTab && uniqueUniverses.length > 0) {
@@ -38,7 +42,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (selectedTab) {
-      const filtered = allCharacters.filter((char) => char.univers === selectedTab);
+      const filtered = allCharacters.filter(
+        (char) => char.univers?.univers === selectedTab
+      );
       setCharacters(filtered);
     }
   }, [selectedTab, allCharacters]);
@@ -124,7 +130,7 @@ const Dashboard = () => {
                       />
                     </td>
                     <td className="px-4 py-3">{char.name}</td>
-                    <td className="px-4 py-3">{char.univers}</td>
+                    <td className="px-4 py-3">{char.univers?.univers}</td>
                     <td className="px-4 py-3">
                       <Link
                         to={`/updatecharacter/${char._id}`}

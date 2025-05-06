@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -21,6 +21,7 @@ const CreateCharacter = () => {
     univers: "",
     file: null,
   });
+  const [universes, setUniverses] = useState([]);
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const { token } = useContext(AuthContext);
@@ -34,6 +35,19 @@ const CreateCharacter = () => {
       setCharacter({ ...character, [e.target.name]: e.target.value });
     }
   };
+
+  const fetchUnivers = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/getunivers`);
+      setUniverses(response?.data?.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnivers();
+  }, []);
 
   // handle form submit
   const handleSubmit = async (e) => {
@@ -55,6 +69,7 @@ const CreateCharacter = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      setLoading(false);
 
       console.log(response?.data);
       toast.success("Character created successfully", {
@@ -75,7 +90,6 @@ const CreateCharacter = () => {
         duration: 3000,
       });
 
-      setLoading(false);
       // Reset form
       setCharacter({
         name: "",
@@ -189,14 +203,30 @@ const CreateCharacter = () => {
           {/* Universe Select */}
           <div className="flex items-center gap-3 bg-gray-800 p-3 rounded">
             <FaGlobe />
-            <input type="text"
+            {/* <input type="text"
             name="univers"
             value={character.univers}
             onChange={handleChange}
             placeholder="enter univers"
             required
              className="w-full p-3 rounded bg-gray-800 text-white outline-none"
-            />
+            /> */}
+            <select
+              name="univers"
+              value={character.univers}
+              onChange={handleChange}
+              required
+              className="w-full p-3 rounded bg-gray-800 text-white outline-none"
+            >
+              <option value="" disabled>
+                Select Universe
+              </option>
+              {universes.map((uni) => (
+                <option key={uni._id} value={uni._id}>
+                  {uni.univers}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* File Upload */}

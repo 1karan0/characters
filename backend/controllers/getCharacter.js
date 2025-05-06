@@ -1,13 +1,14 @@
 const Character = require("../models/characterModel");
+const Univers = require('../models/UniversModel')
 
 exports.getAllCharacters = async (req, res) => {
   try {
     // const { univers } = req.params;
-    const characters = await Character.find();
+    const characters = await Character.find().populate("univers");
     if(!characters || characters.length === 0){
       return res.status(404).json({
         success: false,
-        message: "No characters found for this universe enter vailid one",
+        message: " character not found ",
       });
     }
      res.json({
@@ -27,7 +28,7 @@ exports.getAllCharacters = async (req, res) => {
 exports.getCharById = async (req, res) => {
   try {
     const { id } = req.params;
-    const character = await Character.findById(id);
+    const character = await Character.findById(id).populate("univers");
     if(!character){
       res.status(201).json({
         success: false,

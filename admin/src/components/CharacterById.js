@@ -73,7 +73,7 @@ const CharacterById = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between">
             <div>
               <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-900 bg-opacity-70 text-blue-200 mb-3">
-                {character.univers}
+                {character.univers.univers}
               </span>
               <h1 className="text-4xl font-extrabold text-white mb-1 capitalize">{character.name}</h1>
               <p className="text-xl text-gray-300 font-medium">{character.title}</p>

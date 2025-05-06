@@ -54,7 +54,7 @@ exports.login = async (req, res) => {
         message: "enter the email and password",
       });
     }
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
     if (!user) {
       res.status(401).json({
@@ -67,22 +67,27 @@ exports.login = async (req, res) => {
       id: user._id,
     };
     if (await bcrypt.compare(password, user.password)) {
-      let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
+      let token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "1d",
+      });
       user.token = token;
       user.password = undefined;
       const options = {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
         httpOnly: true,
-        secure: false, // true in production (HTTPS)
-  sameSite: "Lax"
+        secure: false,
+        sameSite: "Lax",
       };
-
-      res.cookie("token", token, options).set("Authorization",`Bearer${token}`).status(200).json({
-        success: true,
-        token,
-        user,
-        message: "user loged in successfully",
-      });
+      res
+        .cookie("token", token, options)
+        .set("Authorization", `Bearer${token}`)
+        .status(200)
+        .json({
+          success: true,
+          token,
+          user,
+          message: "user loged in successfully",
+        });
     } else {
       return res.status(403).json({
         success: false,

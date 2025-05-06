@@ -46,7 +46,7 @@ const Character = () => {
               WebkitTextFillColor: "transparent",
             }}
           >
-            {character?.univers} Characters
+            {character?.univers?.univers} Characters
           </h1>
         </div>
       </div>

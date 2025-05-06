@@ -17,12 +17,30 @@ const Home = () => {
     try {
       const response = await axios.get(`${BASE_URL}/characters`);
       const allCharacters = response.data.data;
-      setCharacters(allCharacters);
 
-      const uniqueUniverses = [...new Set(allCharacters.map(c => c.univers))];
+      // Normalize: add universId and universName for filtering
+      const normalizedCharacters = allCharacters.map((c) => ({
+        ...c,
+        universId: c.univers._id,
+        universName: c.univers.univers,
+      }));
+
+      setCharacters(normalizedCharacters);
+
+      // Unique universes by ID
+      const seen = new Set();
+      const uniqueUniverses = [];
+      for (let c of allCharacters) {
+        if (!seen.has(c.univers._id)) {
+          seen.add(c.univers._id);
+          uniqueUniverses.push(c.univers);
+        }
+      }
       setUniverses(uniqueUniverses);
 
-      const defaultCharacters = allCharacters.filter(c => c.univers === selectedTab);
+      const defaultCharacters = normalizedCharacters.filter(
+        (c) => c.univers.univers === selectedTab
+      );
       setSelectedCharacter(defaultCharacters[0]);
     } catch (err) {
       console.error("Error fetching characters:", err);
@@ -35,15 +53,15 @@ const Home = () => {
     fetchCharacter();
   }, [selectedTab]);
 
-  if (loading) {
-    return <Loader />;
-  }
+  if (loading) return <Loader />;
 
-  const filteredCharacters = characters.filter(c => c.univers === selectedTab);
+  const filteredCharacters = characters.filter(
+    (c) => c.universName === selectedTab
+  );
 
   return (
     <div className="bg-gradient-to-b min-h-screen xsm:py-4 font-[Marcellus,serif] from-[#22130d] to-[#0e0422] text-white flex flex-col items-center relative overflow-hidden">
-      {/* Hero Section */}
+      {/* Hero */}
       <h1
         style={{
           background: "linear-gradient(180deg, #FEE9BE, #F6CF7F)",
@@ -58,44 +76,46 @@ const Home = () => {
         Prove your skills in the arena forged by game industry veterans and TCG fanatics
       </p>
 
-      {/* Universe Tabs */}
-      <div className="flex gap-7 mb-8 ">
+      {/* Tabs */}
+      <div className="flex gap-7 mb-8">
         {universes.map((uni) => (
           <button
-            key={uni}
-            onClick={() => setSelectedTab(uni)}
+            key={uni._id}
+            onClick={() => setSelectedTab(uni.univers)}
             className={`hover:text-white xsm:text-xs capitalize ${
-              selectedTab === uni ? "text-white border-b-2 border-yellow-400" : "text-gray-400"
+              selectedTab === uni.univers
+                ? "text-white border-b-2 border-yellow-400"
+                : "text-gray-400"
             }`}
           >
-            {uni}
+            {uni.univers}
           </button>
         ))}
       </div>
 
-      {/* Character Select */}
+      {/* Character Selector */}
       <div className="flex xsm:flex-col sm:flex-col md:flex-col">
         <div className="flex flex-col xsm:flex-row sm:flex-row md:flex-row md:justify-center sm:justify-center xsm:justify-center items-center gap-6 mb-8">
           {filteredCharacters.map((character) => (
             <button
-              key={character?._id}
+              key={character._id}
               onClick={() => setSelectedCharacter(character)}
               className={`rounded-full overflow-hidden border-2 ${
-                selectedCharacter?._id === character?._id
+                selectedCharacter?._id === character._id
                   ? "border-orange-400"
                   : "border-gray-700"
               }`}
             >
               <img
-                src={character?.image}
-                alt={character?.name}
+                src={character.image}
+                alt={character.name}
                 className="w-16 h-16 xsm:w-8 xsm:h-8 sm:w-12 sm:h-12 object-cover bg-gradient-to-r from-sky-300 to-[#642fa6]"
               />
             </button>
           ))}
         </div>
 
-        {/* Selected Character Display */}
+        {/* Selected Character Details */}
         {selectedCharacter && (
           <div className="flex flex-col ml-36 xsm:ml-0 md:ml-0 items-center sm:ml-0 text-center">
             <div className="flex items-center xsm:flex-col sm:flex-col justify-center">
@@ -118,8 +138,8 @@ const Home = () => {
                 </p>
               </div>
               <img
-                src={selectedCharacter?.image}
-                alt={selectedCharacter?.name}
+                src={selectedCharacter.image}
+                alt={selectedCharacter.name}
                 className="h-[64vh] w-[30vw] xsm:w-full sm:w-[60%] object-contain"
               />
             </div>

@@ -1,6 +1,6 @@
 const Character = require("../models/characterModel");
+const Univers =require('../models/UniversModel');
 const { cloudinary } = require("../config/cloudinary");
-const fs = require("fs");
 
 function isFileSupported(type, supportedType) {
   return supportedType.includes(type);
@@ -46,6 +46,14 @@ exports.createCharacter = async (req, res) => {
         message: "Please fill all the fields",
       });
     }
+
+    const universeExists = await Univers.findById(univers);
+    if (!universeExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Universe not found",
+      });
+    }
     
     const character = await Character.create({
       name,
@@ -53,7 +61,7 @@ exports.createCharacter = async (req, res) => {
       shortdescription,
       fulldescription,
       image: response.secure_url,
-      univers,
+      univers:univers,
     });
 
     res.status(200).json({

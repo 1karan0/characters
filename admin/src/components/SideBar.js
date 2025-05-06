@@ -2,6 +2,7 @@ import React from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUsers, FaUserPlus } from "react-icons/fa6";
+import { TbUniverse } from "react-icons/tb";
 
 const SideBar = () => {
   const linkStyle = ({ isActive }) =>
@@ -30,6 +31,9 @@ const SideBar = () => {
           </NavLink>
           <NavLink to="/Createcharacter" className={linkStyle}>
             <FaUserPlus /> Create Character
+          </NavLink>
+          <NavLink to="/createunivers" className={linkStyle}>
+            <TbUniverse /> Create Univers
           </NavLink>
         </nav>
         

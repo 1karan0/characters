@@ -9,6 +9,7 @@ import Signup from "./components/Signup";
 import { AuthContext } from './components/AuthContext';
 import UpdateCharacter from "./components/UpdateCharacter";
 import CharacterById from "./components/CharacterById";
+import CreateUnivers from "./components/CreateUnivers";
 
 
 const App = () => {
@@ -18,7 +19,6 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Redirect if already logged in */}
         <Route
           path="/Login"
           element={!token ? <Login /> : <Navigate to="/Dashboard" />}
@@ -36,7 +36,7 @@ const App = () => {
             <Route path="Createcharacter" element={<CreateCharacter />} />
             <Route path="updateCharacter/:id" element={<UpdateCharacter/>}/>
             <Route path="character/:id" element={<CharacterById/>}/>
-            {/* Optional: fallback redirect */}
+            <Route path="createunivers" element={<CreateUnivers/>}/>
             <Route path="*" element={<Navigate to="/Dashboard" />} />
           </Route>
         ) : (

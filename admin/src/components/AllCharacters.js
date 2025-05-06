@@ -29,8 +29,14 @@ const AllCharacters = () => {
 
       setAllCharacters(allChars);
 
-      // Extract unique universes
-      const uniqueUniverses = [...new Set(allChars.map((char) => char.univers))];
+      // Extract unique universe names
+      const uniqueUniverses = [
+        ...new Set(
+          allChars
+            .map((char) => char.univers?.univers)
+            .filter((u) => u && typeof u === "string")
+        )
+      ];
       setUniverses(uniqueUniverses);
 
       // Set default tab
@@ -52,7 +58,7 @@ const AllCharacters = () => {
   useEffect(() => {
     if (selectedTab) {
       const filtered = allCharacters.filter(
-        (char) => char.univers === selectedTab
+        (char) => char.univers?.univers === selectedTab
       );
       setCharacters(filtered);
     }
@@ -98,31 +104,31 @@ const AllCharacters = () => {
                 : "bg-gray-700 text-white border-gray-500"
             }`}
           >
-            {universe.charAt(0).toUpperCase() + universe.slice(1)}
+            {universe?.charAt(0).toUpperCase() + universe?.slice(1)}
           </button>
         ))}
       </div>
 
       {/* Loader or Characters */}
       {loading ? (
-        <div className="min-h-screen flex justify-center items-center bg-gray-900">
-        <div className="flex flex-col items-center">
-          <div className="w-16 h-16 border-4 border-purple-800 border-t-transparent rounded-full animate-spin"></div>
-          <p className="mt-4 text-xl font-medium text-white">Loading character...</p>
+        <div className="min-h-screen flex justify-center items-center ">
+          <div className="flex flex-col items-center">
+            <div className="w-16 h-16 border-4 border-purple-800 border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-4 text-xl font-medium text-white">Loading character...</p>
+          </div>
         </div>
-      </div>
       ) : characters.length === 0 ? (
         <div className="min-h-screen flex justify-center items-center bg-gray-900">
-        <div className="bg-gray-800 rounded-lg p-8 max-w-md text-center">
-          <div className="inline-block p-4 rounded-full bg-gray-700 mb-4">
-            <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 14v-4m-4 4h8"></path>
-            </svg>
+          <div className="bg-gray-800 rounded-lg p-8 max-w-md text-center">
+            <div className="inline-block p-4 rounded-full bg-gray-700 mb-4">
+              <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 14v-4m-4 4h8"></path>
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">Character Not Found</h2>
+            <p className="text-gray-300">The character you're looking for doesn't exist or has been removed.</p>
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">Character Not Found</h2>
-          <p className="text-gray-300">The character you're looking for doesn't exist or has been removed.</p>
         </div>
-      </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {characters.map((char) => (

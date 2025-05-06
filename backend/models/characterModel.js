@@ -21,8 +21,9 @@ const characterSchema = new mongoose.Schema({
     required: true,
   },
   univers: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref:"univers"
   },
 
   createdAt: {
